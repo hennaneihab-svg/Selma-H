@@ -43,13 +43,13 @@
   --text-3xl:     clamp(2rem, 5vw, 3rem);
   --text-hero:    clamp(3.2rem, 8vw, 8rem);
 
-  /* Espacement */
-  --space-xs:     0.4rem;
-  --space-sm:     0.875rem;
-  --space-md:     1.5rem;
-  --space-lg:     2.25rem;
-  --space-xl:     3.5rem;
-  --space-xxl:    5rem;
+  /* Espacement — calibré pour site compact */
+  --space-xs:     0.35rem;
+  --space-sm:     0.75rem;
+  --space-md:     1.25rem;
+  --space-lg:     2rem;
+  --space-xl:     3rem;
+  --space-xxl:    4.5rem;
 
   /* Transitions */
   --ease-gold:    cubic-bezier(0.16, 1, 0.3, 1);
@@ -522,7 +522,8 @@ p {
    ============================================================ */
 .stitch-line {
   display: block;
-  margin-top: var(--space-md);
+  margin-top: var(--space-sm);
+  margin-bottom: var(--space-sm);
   overflow: visible;
 }
 
@@ -614,7 +615,7 @@ p {
    11. SECTIONS COMMUNES
    ============================================================ */
 section {
-  padding: var(--space-lg) 0;
+  padding: var(--space-md) 0;
 }
 
 .section-inner {
@@ -624,13 +625,13 @@ section {
 }
 
 .section-header {
-  margin-bottom: var(--space-md);
+  margin-bottom: var(--space-sm);
 }
 
 @media (max-width: 768px) {
-  section { padding: var(--space-md) 0; }
+  section { padding: var(--space-sm) 0; }
   .section-inner { padding: 0 var(--space-sm); }
-  .section-header { margin-bottom: var(--space-sm); }
+  .section-header { margin-bottom: var(--space-xs); }
 }
 
 /* Divider doré */
@@ -753,10 +754,10 @@ section {
   font-size: var(--text-base);
   color: var(--ivory-dim);
   max-width: 480px;
-  line-height: 1.8;
+  line-height: 1.7;
   opacity: 0;
   transform: translateY(20px);
-  margin-bottom: var(--space-lg);
+  margin-bottom: var(--space-md);
 }
 
 .hero-ctas {
@@ -964,18 +965,27 @@ section {
   background: var(--black-soft);
   border-top: 1px solid var(--gold-20);
   border-bottom: 1px solid var(--gold-20);
-  padding: var(--space-lg) var(--space-md);
+  padding: var(--space-md) var(--space-md);
   text-align: center;
+}
+
+/* Annule les margin-bottom inline dans les CTA bands */
+.cta-band p {
+  color: var(--ivory-dim);
+  margin-bottom: var(--space-sm) !important;
+  max-width: 480px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .cta-band h2 {
   font-size: var(--text-2xl);
   color: var(--gold-pale);
-  margin-bottom: var(--space-sm);
+  margin-bottom: var(--space-xs);
 }
 
 @media (max-width: 768px) {
-  .cta-band { padding: var(--space-md) var(--space-sm); }
+  .cta-band { padding: var(--space-sm) var(--space-sm); }
   .cta-band h2 { font-size: var(--text-xl); }
 }
 
@@ -1038,21 +1048,21 @@ section {
 }
 
 .atelier-text p + p {
-  margin-top: var(--space-md);
+  margin-top: var(--space-sm);
 }
 
 .atelier-points {
-  margin-top: var(--space-lg);
+  margin-top: var(--space-md);
   display: flex;
   flex-direction: column;
-  gap: var(--space-sm);
+  gap: var(--space-xs);
 }
 
 .atelier-point {
   display: flex;
   align-items: flex-start;
   gap: var(--space-sm);
-  padding: var(--space-sm) 0;
+  padding: var(--space-xs) 0;
   border-bottom: 1px solid var(--gold-10);
 }
 
@@ -1799,11 +1809,69 @@ section {
 .mb-sm { margin-bottom: var(--space-sm); }
 .mb-md { margin-bottom: var(--space-md); }
 .mb-lg { margin-bottom: var(--space-lg); }
-.mt-lg { margin-top: var(--space-lg); }
+.mt-lg { margin-top: var(--space-sm); }
 
 /* ============================================================
-   26. FIXES MOBILE GLOBAUX
+   26. TOAST NOTIFICATION
    ============================================================ */
+#toast {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 9000;
+  background: var(--black-soft);
+  border: 1px solid var(--gold-amber);
+  color: var(--ivory);
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  padding: 0.85em 1.25em;
+  max-width: 320px;
+  line-height: 1.4;
+  border-radius: 4px;
+  transform: translateY(120px);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.35s var(--ease-gold), opacity 0.35s ease;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+}
+
+#toast.show {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ============================================================
+   27. FIXES MOBILE GLOBAUX (<768px & <480px)
+   ============================================================ */
+@media (max-width: 768px) {
+  .form-input, .form-select, .form-textarea {
+    font-size: 16px !important; /* Prevents unwanted iOS Safari viewport zooming */
+  }
+}
+
+@media (max-width: 540px) {
+  .process-steps {
+    padding-left: 0;
+  }
+  .process-steps::before {
+    display: none;
+  }
+  .process-step {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    padding: var(--space-sm) 0;
+  }
+  .process-step::before {
+    display: none;
+  }
+  .step-num {
+    font-size: 1.8rem;
+    line-height: 1;
+  }
+}
+
 @media (max-width: 480px) {
   :root {
     --space-md: 1.1rem;
@@ -1812,20 +1880,30 @@ section {
     --header-h: 60px;
   }
 
+  #toast {
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    max-width: none;
+    text-align: center;
+  }
+
   .btn {
     padding: 0.75em 1.4em;
-    font-size: 0.62rem;
+    font-size: 0.65rem;
     letter-spacing: 0.15em;
+    min-height: 44px;
   }
 
   .btn-rdv {
     padding: 0.5em 1em;
+    min-height: 40px;
   }
 
   .header-logo { height: 36px; }
 
   .hero-title {
-    font-size: clamp(2.8rem, 12vw, 4.5rem);
+    font-size: clamp(2.8rem, 12vw, 4.2rem);
   }
 
   .hero-desc {
@@ -1838,8 +1916,8 @@ section {
     letter-spacing: 0.2em;
   }
 
-  h2 { font-size: clamp(1.5rem, 6vw, 2rem); }
-  h3 { font-size: clamp(1.2rem, 5vw, 1.5rem); }
+  h2 { font-size: clamp(1.4rem, 6vw, 1.85rem); }
+  h3 { font-size: clamp(1.15rem, 5vw, 1.4rem); }
 
   .testimonials-grid { grid-template-columns: 1fr; gap: var(--space-sm); }
   .testimonial-card { padding: var(--space-sm); }
@@ -1847,11 +1925,6 @@ section {
   .atelier-grid { gap: var(--space-md); }
   .atelier-image-frame { aspect-ratio: 3/2; }
   .atelier-points { margin-top: var(--space-md); }
-
-  .process-steps { padding-left: 40px; }
-  .process-steps::before { left: 14px; }
-  .process-step::before { left: -37px; }
-  .step-num { font-size: 2.2rem; }
 
   .contact-grid { gap: var(--space-md); }
   .contact-map { height: 180px; }
@@ -1863,3 +1936,4 @@ section {
   .footer-top { padding: 0 var(--space-sm); }
   .footer-social { gap: var(--space-xs); }
 }
+
