@@ -1,0 +1,27 @@
+# Fichiers système
+.DS_Store
+Thumbs.db
+desktop.ini
+*.lnk
+
+# Éditeurs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.bak
+
+# Node (si utilisé plus tard)
+node_modules/
+npm-debug.log*
+yarn-error.log
+
+# Build (si framework ajouté plus tard)
+dist/
+build/
+.cache/
+
+# Variables d'environnement
+.env
+.env.local
