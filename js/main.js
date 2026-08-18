@@ -298,19 +298,57 @@ function filterGallery(category, btn) {
 }
 
 /* ============================================================
-   FORMULAIRE CONTACT — validation basique
+   FORMULAIRE CONTACT — Web3Forms
+   https://web3forms.com — remplacer YOUR_ACCESS_KEY dans contact.html
    ============================================================ */
 function initContactForm() {
   const form = $('#contact-form');
   if (!form) return;
 
-  form.addEventListener('submit', e => {
+  form.addEventListener('submit', async e => {
     e.preventDefault();
-    // Ici : brancher Formspree ou backend
-    showToast('Votre demande a bien été envoyée. Nous vous contacterons sous 48h.');
-    form.reset();
+
+    const submitBtn = form.querySelector('[type="submit"]');
+    const originalText = submitBtn ? submitBtn.textContent : '';
+
+    // Feedback visuel pendant l'envoi
+    if (submitBtn) {
+      submitBtn.textContent = 'Envoi en cours…';
+      submitBtn.disabled = true;
+    }
+
+    try {
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        showToast('Votre demande a bien été envoyée. Selma H vous contactera sous 48h. ✦');
+        form.reset();
+      } else {
+        showToast('Une erreur est survenue. Veuillez réessayer ou nous contacter par WhatsApp.');
+      }
+    } catch (err) {
+      showToast('Connexion impossible. Veuillez réessayer ou nous contacter directement par WhatsApp.');
+    } finally {
+      if (submitBtn) {
+        submitBtn.textContent = originalText;
+        submitBtn.disabled = false;
+      }
+    }
   });
 }
+
 
 /* ============================================================
    TOAST NOTIFICATION

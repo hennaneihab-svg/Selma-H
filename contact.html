@@ -72,8 +72,14 @@
           <!-- FORMULAIRE -->
           <div class="reveal">
             <span class="eyebrow" style="margin-bottom:var(--space-md);">Votre demande</span>
-            <!-- Brancher un service d'envoi de formulaire type Formspree, ou un backend, avant mise en ligne -->
-            <form id="contact-form" action="" method="POST" novalidate aria-label="Formulaire de contact">
+            <!-- Web3Forms : créer un compte sur https://web3forms.com → copier l'Access Key → remplacer YOUR_ACCESS_KEY ci-dessous -->
+            <form id="contact-form" novalidate aria-label="Formulaire de contact">
+              <!-- Champ requis par Web3Forms -->
+              <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY">
+              <!-- Nom de l'expéditeur visible dans l'email reçu -->
+              <input type="hidden" name="subject" value="Nouvelle demande — Selma H">
+              <!-- Empêche les bots -->
+              <input type="checkbox" name="botcheck" style="display:none;" tabindex="-1" aria-hidden="true">
 
               <div class="form-group">
                 <input
