@@ -68,8 +68,9 @@ python -m http.server 8000
 1. **Photos** : Remplacer tous les dégradés CSS (commentés `<!-- Remplacer par... -->`) par de vraies photos
 2. **WhatsApp** : Remplacer `213XXXXXXXXX` par le vrai numéro dans tous les fichiers HTML
 3. **Instagram / Facebook** : Remplacer `href="#"` par les vrais liens dans le footer de chaque page
-4. **Formulaire contact** : Brancher `contact.html` à [Formspree](https://formspree.io) ou un backend (voir commentaire dans le HTML)
-5. **Adresse** : Décider si l'adresse exacte apparaît ou si le placeholder "sur rendez-vous" est conservé
+4. **Formulaire contact** : Configuré avec **Web3Forms** (clé active, notifications envoyées à `selmasalhi.pro@gmail.com`)
+5. **Email direct** : `selmasalhi.pro@gmail.com` intégré sur la page Contact et dans tous les pieds de page
+6. **Adresse** : Décider si l'adresse exacte apparaît ou si le placeholder "sur rendez-vous" est conservé
 
 ---
 
