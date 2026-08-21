@@ -325,6 +325,80 @@ function showToast(message) {
 }
 
 /* ============================================================
+   LIGHTBOX PLEIN ÉCRAN (Galerie & Collections)
+   ============================================================ */
+function initLightbox() {
+  let modal = $('#lightbox-modal');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'lightbox-modal';
+    modal.className = 'lightbox-modal';
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-label', "Affichage de l'image en plein écran");
+    modal.innerHTML = `
+      <div class="lightbox-backdrop"></div>
+      <div class="lightbox-container">
+        <button type="button" class="lightbox-close" aria-label="Fermer la vue plein écran">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+        <div class="lightbox-image-wrapper">
+          <img src="" alt="" class="lightbox-image">
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+  }
+
+  const backdrop = modal.querySelector('.lightbox-backdrop');
+  const closeBtn = modal.querySelector('.lightbox-close');
+  const imgEl = modal.querySelector('.lightbox-image');
+
+  function openLightbox(src, alt) {
+    if (!src) return;
+    imgEl.src = src;
+    imgEl.alt = alt || 'Création Selma H';
+    modal.classList.add('active');
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeLightbox() {
+    modal.classList.remove('active');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+    setTimeout(() => {
+      if (!modal.classList.contains('active')) {
+        imgEl.src = '';
+      }
+    }, 300);
+  }
+
+  if (closeBtn) closeBtn.addEventListener('click', closeLightbox);
+  if (backdrop) backdrop.addEventListener('click', closeLightbox);
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal.classList.contains('active')) {
+      closeLightbox();
+    }
+  });
+
+  const clickableItems = $$('.gallery-item, .collection-block-visual');
+  clickableItems.forEach(item => {
+    const img = item.querySelector('img');
+    if (!img) return;
+    item.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      openLightbox(img.currentSrc || img.src, img.alt);
+    });
+  });
+}
+
+/* ============================================================
    INITIALISATION IMMÉDIATE (0ms delay)
    ============================================================ */
 function initApp() {
@@ -337,6 +411,7 @@ function initApp() {
   initStitchLines();
   initFaq();
   initContactForm();
+  initLightbox();
 
   const filterBtns = $$('.gallery-filter-btn');
   filterBtns.forEach(btn => {
