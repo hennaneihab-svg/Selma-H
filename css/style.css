@@ -277,9 +277,7 @@ p {
 
 #header.scrolled,
 #header.opaque {
-  background: rgba(10, 9, 8, 0.95);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(10, 9, 8, 0.98);
   border-bottom-color: var(--gold-20);
 }
 
@@ -661,7 +659,7 @@ section {
   background-image: url('../assets/hero_bg.jpg');
   background-size: cover;
   background-position: center;
-  will-change: transform;
+  transform: translate3d(0, 0, 0);
 }
 
 .hero-overlay {
@@ -679,11 +677,11 @@ section {
   position: absolute;
   right: -5%;
   top: 50%;
-  transform: translateY(-50%);
-  height: 85vh;
-  opacity: 0.04;
+  transform: translate3d(0, -50%, 0);
+  height: 80vh;
+  opacity: 0.035;
   pointer-events: none;
-  filter: grayscale(1) brightness(2);
+  user-select: none;
 }
 
 .hero-content {

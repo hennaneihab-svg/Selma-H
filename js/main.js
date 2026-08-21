@@ -1,6 +1,6 @@
 /* ============================================================
    SELMA H — Main JavaScript
-   Performance-Optimized GSAP + Animations + Interactions
+   Ultra-High Performance, Zero-Lag Desktop & Mobile Engine
    ============================================================ */
 
 /* ============================================================
@@ -12,40 +12,14 @@ const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)
 const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (window.innerWidth <= 1024);
 
 /* ============================================================
-   LENIS SMOOTH SCROLL (Desktop only — native 120Hz on mobile)
+   NATIVE HARDWARE-ACCELERATED SCROLL (0ms latency on all devices)
    ============================================================ */
-let lenis;
-function initLenis() {
-  if (prefersReducedMotion || isTouchDevice || typeof Lenis === 'undefined') {
-    document.documentElement.style.scrollBehavior = 'smooth';
-    return;
-  }
-
-  try {
-    lenis = new Lenis({
-      duration: 0.8,
-      easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smooth: true,
-      smoothTouch: false
-    });
-
-    if (typeof ScrollTrigger !== 'undefined') {
-      lenis.on('scroll', ScrollTrigger.update);
-    }
-
-    if (typeof gsap !== 'undefined') {
-      gsap.ticker.add((time) => {
-        lenis.raf(time * 1000);
-      });
-      gsap.ticker.lagSmoothing(0);
-    }
-  } catch (e) {
-    document.documentElement.style.scrollBehavior = 'smooth';
-  }
+function initScroll() {
+  document.documentElement.style.scrollBehavior = 'smooth';
 }
 
 /* ============================================================
-   CURSEUR PERSONNALISÉ (Desktop only, zero overhead)
+   CURSEUR PERSONNALISÉ (Ultra-light, Desktop only)
    ============================================================ */
 function initCursor() {
   if (isTouchDevice || prefersReducedMotion) return;
@@ -72,8 +46,8 @@ function initCursor() {
   }, { passive: true });
 
   function animateFollower() {
-    followerX += (mouseX - followerX) * 0.15;
-    followerY += (mouseY - followerY) * 0.15;
+    followerX += (mouseX - followerX) * 0.2;
+    followerY += (mouseY - followerY) * 0.2;
     follower.style.transform = `translate3d(${followerX}px, ${followerY}px, 0)`;
 
     if (Math.abs(mouseX - followerX) > 0.1 || Math.abs(mouseY - followerY) > 0.1) {
@@ -90,7 +64,7 @@ function initCursor() {
 }
 
 /* ============================================================
-   HEADER SCROLL
+   HEADER SCROLL (Passive + RAF Throttled)
    ============================================================ */
 function initNav() {
   const header = $('#header');
@@ -106,7 +80,8 @@ function initNav() {
   window.addEventListener('scroll', () => {
     if (!ticking) {
       window.requestAnimationFrame(() => {
-        if (window.scrollY > 40) {
+        const scrolled = window.scrollY > 30;
+        if (scrolled) {
           header.classList.add('scrolled');
           header.classList.remove('opaque');
         } else {
@@ -148,7 +123,7 @@ function initMobileMenu() {
 }
 
 /* ============================================================
-   HERO ANIMATIONS (Instant, crisp)
+   HERO ENTRANCE ANIMATIONS (GPU Composite Layer)
    ============================================================ */
 function initHeroAnimations() {
   const hero = $('#hero');
@@ -175,33 +150,19 @@ function initHeroAnimations() {
   gsap.to(elements, {
     opacity: 1,
     y: 0,
-    duration: 0.6,
-    stagger: 0.1,
+    duration: 0.5,
+    stagger: 0.08,
     ease: 'power2.out'
   });
 
   const scrollEl = $('.hero-scroll');
   if (scrollEl) {
-    gsap.to(scrollEl, { opacity: 1, delay: 0.6, duration: 0.4 });
-  }
-
-  const heroBg = $('.hero-bg');
-  if (heroBg && !isTouchDevice && typeof ScrollTrigger !== 'undefined') {
-    gsap.to(heroBg, {
-      yPercent: 15,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: hero,
-        start: 'top top',
-        end: 'bottom top',
-        scrub: 0.5
-      }
-    });
+    gsap.to(scrollEl, { opacity: 1, delay: 0.5, duration: 0.4 });
   }
 }
 
 /* ============================================================
-   SCROLL REVEAL (Fast IntersectionObserver)
+   SCROLL REVEAL (IntersectionObserver + Instant Unobserve)
    ============================================================ */
 function initScrollReveal() {
   const revealEls = $$('.reveal');
@@ -219,13 +180,13 @@ function initScrollReveal() {
         observer.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.05, rootMargin: '0px 0px 50px 0px' });
+  }, { threshold: 0.05, rootMargin: '0px 0px 60px 0px' });
 
   revealEls.forEach(el => observer.observe(el));
 }
 
 /* ============================================================
-   FIL DORÉ ANIMÉ (stitch lines)
+   FIL DORÉ ANIMÉ (IntersectionObserver + Instant Unobserve)
    ============================================================ */
 function initStitchLines() {
   const lines = $$('.stitch-line');
@@ -364,32 +325,10 @@ function showToast(message) {
 }
 
 /* ============================================================
-   MAGNETIC BUTTONS (Desktop only)
-   ============================================================ */
-function initMagneticButtons() {
-  if (isTouchDevice || prefersReducedMotion || typeof gsap === 'undefined') return;
-
-  $$('.magnetic').forEach(btn => {
-    btn.addEventListener('mousemove', e => {
-      const rect = btn.getBoundingClientRect();
-      const dx = e.clientX - (rect.left + rect.width / 2);
-      const dy = e.clientY - (rect.top + rect.height / 2);
-      gsap.to(btn, { x: dx * 0.3, y: dy * 0.3, duration: 0.3, ease: 'power2.out' });
-    });
-    btn.addEventListener('mouseleave', () => {
-      gsap.to(btn, { x: 0, y: 0, duration: 0.5, ease: 'elastic.out(1, 0.4)' });
-    });
-  });
-}
-
-/* ============================================================
-   INITIALISATION IMMÉDIATE (Zero lag)
+   INITIALISATION IMMÉDIATE (0ms delay)
    ============================================================ */
 function initApp() {
-  if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
-    gsap.registerPlugin(ScrollTrigger);
-  }
-  initLenis();
+  initScroll();
   initCursor();
   initNav();
   initMobileMenu();
@@ -398,7 +337,6 @@ function initApp() {
   initStitchLines();
   initFaq();
   initContactForm();
-  initMagneticButtons();
 
   const filterBtns = $$('.gallery-filter-btn');
   filterBtns.forEach(btn => {
