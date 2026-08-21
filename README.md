@@ -63,14 +63,13 @@ python -m http.server 8000
 
 ---
 
-## Personnalisation avant mise en ligne
+## Coordonnées & Réseaux configurés
 
-1. **Photos** : Remplacer tous les dégradés CSS (commentés `<!-- Remplacer par... -->`) par de vraies photos
-2. **WhatsApp** : Remplacer `213XXXXXXXXX` par le vrai numéro dans tous les fichiers HTML
-3. **Instagram / Facebook** : Remplacer `href="#"` par les vrais liens dans le footer de chaque page
-4. **Formulaire contact** : Configuré avec **Web3Forms** (clé active, notifications envoyées à `selmasalhi.pro@gmail.com`)
-5. **Email direct** : `selmasalhi.pro@gmail.com` intégré sur la page Contact et dans tous les pieds de page
-6. **Adresse** : Décider si l'adresse exacte apparaît ou si le placeholder "sur rendez-vous" est conservé
+1. **WhatsApp & Téléphone** : `+213 553 26 81 31` (`https://wa.me/213553268131`)
+2. **Instagram** : `https://www.instagram.com/selma.salhi05?igsi=MThncDZldnJicnRtOA==`
+3. **TikTok** : `https://tiktok.com/@selmasalhi5?_r=1&_t=ZS-994UITYHSjw`
+4. **Email & Formulaire** : `selmasalhi.pro@gmail.com` via **Web3Forms** (clé active `b3702116-e898-42f5-9fb2-fe70a364af69`)
+5. **Photos** : Remplacer les dégradés CSS par les photographies réelles des créations
 
 ---
 
